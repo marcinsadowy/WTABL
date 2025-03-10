@@ -32,9 +32,9 @@ def ibl_visualization(delta_ibl_0, z_0hi, z_h, s, D, x_len, H_G):
         plt.plot([bx, tx], [by, ty], color='Blue', linestyle='-')
 
     plt.plot(x, ibl, label='IBL Height [m]', color="Green")   
-    plt.xlabel('x')
-    plt.ylabel('IBL')
-    plt.title('IBL vs x')
+    plt.xlabel('Downstream Distance [m]')
+    plt.ylabel('IBL Height [m]')
+    plt.title('IBL Height as a function of downstream distance')
     plt.legend()
     plt.show()
 
