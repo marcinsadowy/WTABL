@@ -20,7 +20,8 @@ def FrictionIBLheight():
     print(u_star_lo)
     print(u_star_hi/u_star_lo)
 
-    H_G = 1124 # Calculated using the method described on page 6 under equatin 16 in meneveau, they dont specify for the plot what they got?
+    x_H_G = (((z_0hi/z_0lo)**(-u_star_hi/(u_star_lo - u_star_hi)) * z_0lo - z_h)/z_0hi)**(5/4) * z_0hi
+    H_G = z_h + z_0hi * (x_H_G / z_0hi) ** (4 / 5)
 
     # Define x values scaled by z_0hi
     x = np.arange(400*z_0hi, 10000, 1)  # Distance in meters
