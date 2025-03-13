@@ -28,4 +28,4 @@ def U_cT(x, x_len, delta_ibl_0, z_0hi, u_star, k, z_0lo, beta, H_G):
     plt.grid(True)
     plt.show()
 
-#U_cT(x, x_len, delta_ibl_0, z_0hi, u_star, k, z_0lo, beta, H_G)
+U_cT(x, x_len, delta_ibl_0, z_0hi, u_star, k, z_0lo, beta, H_G)
