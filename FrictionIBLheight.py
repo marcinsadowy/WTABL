@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+"""
 delta_ibl_0 = 70 # same as calculated in meneveau
 z_0hi = 0.68 # same as calculated in meneveau
 z_0lo = 0.0001 # same as calculated in meneveau
@@ -12,8 +13,9 @@ k = 0.4 # same as calculated in meneveau
 C_star = 4.5 # same as calculated in meneveau
 C = 4 # same as calculated in meneveau
 U_G = 10 # They dont specify for the plot?
+"""
 
-def FrictionIBLheight():
+def FrictionIBLheight(delta_ibl_0, z_0hi, z_0lo, z_h, s_x, D, f, k, C_star, C, U_G):
     u_star_hi = (k * U_G) / (np.log(U_G / (f * z_0hi)) - C_star)
     u_star_lo = (k * U_G) / (np.log(U_G / (f * z_0lo)) - C_star)
 
@@ -26,7 +28,6 @@ def FrictionIBLheight():
 
     # Calculate δ_ibl(x) / z_0hi (scaled internal boundary layer height)
     ibl_x = delta_ibl_0 + z_0hi * (x / z_0hi) ** (4 / 5)
-    ibl_x = ibl_x  # Scale by z_0hi
     ibl_x[ibl_x >= H_G] = H_G  # Apply boundary limit
 
     # Calculate u_*(x) / u_* (scaled friction velocity evolution)
