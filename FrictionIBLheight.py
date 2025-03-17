@@ -11,7 +11,7 @@ def FrictionIBLheight(delta_ibl_0, z_0hi, z_0lo, z_h, s_x, D, f, k, C_star, C, U
     # Define variables
     ibl_x, u_star_x = symbols('ibl_x u_star_x')
 
-    # LHS, RHS
+    # Eq(LHS, RHS)
     equation = Eq(u_star_x, u_star_lo * (log(ibl_x / z_0lo)) / (log(ibl_x / z_0hi)))
 
     # Substitute u_star_x with u_star_hi
@@ -20,7 +20,7 @@ def FrictionIBLheight(delta_ibl_0, z_0hi, z_0lo, z_h, s_x, D, f, k, C_star, C, U
     # Solve for ibl_x
     initial_guess = 1100
     H_G = nsolve(equation_substituted, ibl_x, initial_guess)
-    print('nsolved H_G: ', H_G)
+    print('ABL height at u*(x) = u*hi: ', int(H_G), 'm')
     
     # -----------------------------------
 
@@ -31,14 +31,10 @@ def FrictionIBLheight(delta_ibl_0, z_0hi, z_0lo, z_h, s_x, D, f, k, C_star, C, U
     # Calculate δ_ibl(x) / z_0hi (scaled internal boundary layer height)
     ibl_x = delta_ibl_0 + z_0hi * (x / z_0hi) ** (4 / 5)
     ibl_x[ibl_x >= H_G] = H_G  # Apply boundary limit
-    
+
     # Calculate u_*(x) / u_* (scaled friction velocity evolution)
-
     u_star_x = u_star_lo * (np.log(ibl_x/z_0lo)) / (np.log(ibl_x/z_0hi))
-
     u_star_x_scaled = u_star_x / u_star_lo
-
-    
 
     # Calculate δ_ibl(x) / z_0hi (scaled internal boundary layer height)
     ibl_x_scaled = ibl_x / z_0hi  # Scale by z_0hi
@@ -68,9 +64,6 @@ def FrictionIBLheight(delta_ibl_0, z_0hi, z_0lo, z_h, s_x, D, f, k, C_star, C, U
     lines, labels = ax1.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
     ax2.legend(lines + lines2, labels + labels2, loc='upper right')
-
-    # Title
-    plt.title(" \n Modeled Evolution of Friction Velocity \n and Internal Boundary Layer \n")
 
     # Show the plot
     plt.show()
