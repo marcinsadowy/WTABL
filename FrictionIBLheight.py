@@ -25,7 +25,6 @@ def FrictionIBLheight():
 
     # Calculate δ_ibl(x) / z_0hi (scaled internal boundary layer height)
     ibl_x = delta_ibl_0 + z_0hi * (x / z_0hi) ** (4 / 5)
-    ibl_x = ibl_x  # Scale by z_0hi
     ibl_x[ibl_x >= H_G] = H_G  # Apply boundary limit
 
     # Calculate u_*(x) / u_* (scaled friction velocity evolution)
@@ -35,9 +34,8 @@ def FrictionIBLheight():
     u_star_x_scaled = u_star_x / u_star_lo
 
     # Calculate δ_ibl(x) / z_0hi (scaled internal boundary layer height)
-    ibl_x = delta_ibl_0 + z_0hi * (x / z_0hi) ** (4 / 5)
-    ibl_x = ibl_x / z_0hi  # Scale by z_0hi
-    ibl_x[ibl_x >= H_G / z_0hi] = H_G / z_0hi  # Apply boundary limit
+    ibl_x_scaled = ibl_x / z_0hi  # Scale by z_0hi
+    ibl_x_scaled[ibl_x_scaled >= H_G / z_0hi] = H_G / z_0hi  # Apply boundary limit
 
     # Plot both curves
     fig, ax1 = plt.subplots()
@@ -52,7 +50,7 @@ def FrictionIBLheight():
 
     # Create secondary y-axis for δ_ibl(x) / z_0hi
     ax2 = ax1.twinx()
-    ax2.plot(x_scaled, ibl_x, 'k--', label=r'$\delta_{ibl}(x) / z_{0,hi}$')
+    ax2.plot(x_scaled, ibl_x_scaled, 'k--', label=r'$\delta_{ibl}(x) / z_{0,hi}$')
     ax2.set_ylabel(r'$\delta_{ibl}(x) / z_{0,hi}$', color='black')
     ax2.tick_params(axis='y', labelcolor='black')
     ax2.set_xlim(0, 10000/z_0hi)
@@ -70,3 +68,4 @@ def FrictionIBLheight():
     # Show the plot
     plt.show()
 
+    return ibl_x, H_G

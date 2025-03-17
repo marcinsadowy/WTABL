@@ -19,3 +19,5 @@ def U_hT(x, delta_ibl_0, z_0hi, k, z_0lo, u_star_lo, z_h, D, beta, H_G):
     plt.title('\nHub height velocity as a function of downstream distance\n', wrap=True)
     plt.grid(True)
     plt.show()
+    
+    return U_hT_x
