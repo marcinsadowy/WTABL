@@ -15,10 +15,7 @@ U_G = 10 # They dont specify for the plot?
 
 def FrictionIBLheight():
     u_star_hi = (k * U_G) / (np.log(U_G / (f * z_0hi)) - C_star)
-    print(u_star_hi)
     u_star_lo = (k * U_G) / (np.log(U_G / (f * z_0lo)) - C_star)
-    print(u_star_lo)
-    print(u_star_hi/u_star_lo)
 
     H_G = 1124 # Calculated using the method described on page 6 under equatin 16 in meneveau, they dont specify for the plot what they got?
 
@@ -36,7 +33,6 @@ def FrictionIBLheight():
     u_star_x = u_star_lo * (np.log(ibl_x/z_0lo)) / (np.log(ibl_x/z_0hi))
 
     u_star_x_scaled = u_star_x / u_star_lo
-    print(np.min(u_star_x_scaled))
 
     # Calculate δ_ibl(x) / z_0hi (scaled internal boundary layer height)
     ibl_x = delta_ibl_0 + z_0hi * (x / z_0hi) ** (4 / 5)
