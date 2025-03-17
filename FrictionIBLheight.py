@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-"""
 delta_ibl_0 = 70 # same as calculated in meneveau
 z_0hi = 0.68 # same as calculated in meneveau
 z_0lo = 0.0001 # same as calculated in meneveau
@@ -13,14 +12,15 @@ k = 0.4 # same as calculated in meneveau
 C_star = 4.5 # same as calculated in meneveau
 C = 4 # same as calculated in meneveau
 U_G = 10 # They dont specify for the plot?
-"""
 
-def FrictionIBLheight(delta_ibl_0, z_0hi, z_0lo, z_h, s_x, D, f, k, C_star, C, U_G):
+def FrictionIBLheight():
     u_star_hi = (k * U_G) / (np.log(U_G / (f * z_0hi)) - C_star)
+    print(u_star_hi)
     u_star_lo = (k * U_G) / (np.log(U_G / (f * z_0lo)) - C_star)
+    print(u_star_lo)
+    print(u_star_hi/u_star_lo)
 
-    x_H_G = (((z_0hi/z_0lo)**(-u_star_hi/(u_star_lo - u_star_hi)) * z_0lo - z_h)/z_0hi)**(5/4) * z_0hi
-    H_G = z_h + z_0hi * (x_H_G / z_0hi) ** (4 / 5)
+    H_G = 1124 # Calculated using the method described on page 6 under equatin 16 in meneveau, they dont specify for the plot what they got?
 
     # Define x values scaled by z_0hi
     x = np.arange(400*z_0hi, 10000, 1)  # Distance in meters
@@ -28,6 +28,7 @@ def FrictionIBLheight(delta_ibl_0, z_0hi, z_0lo, z_h, s_x, D, f, k, C_star, C, U
 
     # Calculate δ_ibl(x) / z_0hi (scaled internal boundary layer height)
     ibl_x = delta_ibl_0 + z_0hi * (x / z_0hi) ** (4 / 5)
+    ibl_x = ibl_x  # Scale by z_0hi
     ibl_x[ibl_x >= H_G] = H_G  # Apply boundary limit
 
     # Calculate u_*(x) / u_* (scaled friction velocity evolution)
@@ -35,6 +36,7 @@ def FrictionIBLheight(delta_ibl_0, z_0hi, z_0lo, z_h, s_x, D, f, k, C_star, C, U
     u_star_x = u_star_lo * (np.log(ibl_x/z_0lo)) / (np.log(ibl_x/z_0hi))
 
     u_star_x_scaled = u_star_x / u_star_lo
+    print(np.min(u_star_x_scaled))
 
     # Calculate δ_ibl(x) / z_0hi (scaled internal boundary layer height)
     ibl_x = delta_ibl_0 + z_0hi * (x / z_0hi) ** (4 / 5)
