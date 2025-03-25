@@ -4,7 +4,7 @@ import numpy as np
 def U_hT(ibl_x, z_0hi, k, z_0lo, u_star_lo, z_h, D, beta, H_G):
     
     
-    x_len = 10000
+    x_len = 20000
     x = np.arange(0, x_len)
     
     """
