@@ -25,7 +25,7 @@ def FrictionIBLheight(delta_ibl_0, z_0hi, z_0lo, z_h, s_x, D, f, k, C_star, C, U
     # -----------------------------------
 
     # Define x values scaled by z_0hi
-    x = np.arange(z_0hi*0, 10000, 1)  # Distance in meters
+    x = np.arange(z_0hi*0, 20000, 1)  # Distance in meters
     x_scaled = x/z_0hi # Scale x-axis
 
     # Calculate δ_ibl(x) / z_0hi (scaled internal boundary layer height)
