@@ -33,7 +33,7 @@ blur = np.zeros_like(x, dtype=np.float64)
 
 # Add a Gaussian at each point
 for px, py in points:
-    blur += np.exp(-((x - px)**2 + (y - py)**2) / (2 * sigma**2))
+    blur += 0.8 * np.exp(-((x - px)**2 + (y - py)**2) / (2 * sigma**2))
 
 # Normalize and optionally flip
 blur -= blur.min()
@@ -41,7 +41,7 @@ blur /= blur.max()
 blur = np.flipud(blur)
 
 # Plot with matched colorbar height
-fig, ax = plt.subplots(figsize=(6, 6))
+fig, ax = plt.subplots(figsize=(4, 4))
 levels = np.linspace(0, 1, 100)
 contour = ax.contourf(x, y, blur, levels=levels, cmap='gray_r')
 
