@@ -2,8 +2,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-# Define the list of points (x, y)
-points = np.array([
+# Define the two point sets
+points_1 = np.array([
+    (294,75), (317,108), (341,141), (364,174), (391,211), (416,246),
+    (440,279), (399,308), (374,273), (350,239), (325,205), (300,170),
+    (278,136), (253,101), (211,132), (169,161), (194,194), (269,296),
+    (297,330), (357,336), (313,365), (275,398), (248,362), (227,328),
+    (201,290), (177,260), (154,224), (130,190), (87,222), (112,253),
+    (136,283), (160,318), (186,355), (212,393), (234,423)
+])
+
+points_2 = np.array([
     (526,127), (578,115), (580,182), (586,238), (603,293), (635,353),
     (628,99), (657,128), (679,165), (697,195), (720,229), (739,265),
     (763,298), (763,340), (761,379), (761,415), (762,456), (727,484),
@@ -18,48 +27,49 @@ points = np.array([
     (198,648), (180,686), (166,725), (151,761), (140,791)
 ])
 
-# Create a grid covering the full area of points
-x_range = (0, 900)
-y_range = (0, 900)
-res = 1  # resolution in pixels
+def generate_blur(points, sigma=35):
+    # Determine bounds with padding
+    margin = 50
+    min_x, min_y = points.min(axis=0) - margin
+    max_x, max_y = points.max(axis=0) + margin
 
-x = np.arange(x_range[0], x_range[1], res)
-y = np.arange(y_range[0], y_range[1], res)
-x, y = np.meshgrid(x, y)
+    # Create meshgrid
+    res = 1
+    x, y = np.meshgrid(np.arange(min_x, max_x, res), np.arange(min_y, max_y, res))
 
-# Parameters for the Gaussian blur
-sigma = 35  # standard deviation in pixels
-blur = np.zeros_like(x, dtype=np.float64)
+    # Generate Gaussian blur map
+    blur = np.zeros_like(x, dtype=np.float64)
+    for px, py in points:
+        blur += 0.8 * np.exp(-((x - px)**2 + (y - py)**2) / (2 * sigma**2))
 
-# Add a Gaussian at each point
-for px, py in points:
-    blur += 0.8 * np.exp(-((x - px)**2 + (y - py)**2) / (2 * sigma**2))
+    blur -= blur.min()
+    blur /= blur.max()
 
-# Normalize and optionally flip
-blur -= blur.min()
-blur /= blur.max()
-blur = np.flipud(blur)
+    # Flip vertically once to get origin at top-left
+    blur = np.flipud(blur)
 
-# Plot with matched colorbar height
-fig, ax = plt.subplots(figsize=(4, 4))
-levels = np.linspace(0, 1, 100)
-contour = ax.contourf(x, y, blur, levels=levels, cmap='gray_r')
+    # Plotting
+    fig, ax = plt.subplots(figsize=(4, 4))
+    levels = np.linspace(0, 1, 100)
+    contour = ax.contourf(x, y, blur, levels=levels, cmap='gray_r')
 
-# Match colorbar height using make_axes_locatable
-divider = make_axes_locatable(ax)
-cax = divider.append_axes("right", size="5%", pad=0.2)  # Adjust size and padding here
-cbar = fig.colorbar(contour, cax=cax)
-cbar.set_ticks([0, 0.3, 0.7, 1])
-cbar.ax.set_ylabel(r'$c_{ft}$', rotation=0)
+    # Colorbar
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="5%", pad=0.2)
+    cbar = fig.colorbar(contour, cax=cax)
+    cbar.set_ticks([0, 0.3, 0.7, 1])
+    cbar.ax.set_ylabel(r'$c_{ft}$', rotation=0)
 
-# Hide tick labels and ticks, but keep the box
-ax.set_xticks([])
-ax.set_yticks([])
-ax.set_xticklabels([])
-ax.set_yticklabels([])
-for spine in ax.spines.values():
-    spine.set_visible(True)
+    # Formatting
+    ax.set_xlim(min_x, max_x)
+    ax.set_ylim(min_y, max_y)  # Normal y-limits (bottom to top)
+    ax.set_xticks([]); ax.set_yticks([])
+    for spine in ax.spines.values():
+        spine.set_visible(True)
+    ax.set_aspect('equal')
+    plt.tight_layout()
+    plt.show()
 
-ax.set_aspect('equal')
-plt.tight_layout()
-plt.show()
+# Generate blur maps with adjusted view bounds and different sigmas
+generate_blur(points_1, sigma=17.5)
+generate_blur(points_2, sigma=35)
